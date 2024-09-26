@@ -2,6 +2,7 @@ package com.diego.springboot.di.app.springboot_di.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,8 @@ import com.diego.springboot.di.app.springboot_di.services.ProductService;
  * Problema Actual: Estás creando una instancia
  * de ProductService manualmente dentro del controlador.
  * Esto rompe el principio de Inversión de Dependencias, ya que el controlador
- * es responsable de crear la instancia del servicio. Aquí es donde la inyección de dependencias
+ * es responsable de crear la instancia del servicio. Aquí es donde la inyección
+ * de dependencias
  * juega un papel crucial.
  */
 
@@ -29,7 +31,17 @@ import com.diego.springboot.di.app.springboot_di.services.ProductService;
 @RequestMapping("/api")
 public class SomeController {
 
-    private ProductService service = new ProductService();
+    
+    private ProductService service;
+
+    /**Para este caso la inyeccion de dependencias se hace por medio del metodo Set
+     * Se hace uso de la anotacion @Autowired.
+     */
+
+    @Autowired
+    public void setService(ProductService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public List<Product> list() {
