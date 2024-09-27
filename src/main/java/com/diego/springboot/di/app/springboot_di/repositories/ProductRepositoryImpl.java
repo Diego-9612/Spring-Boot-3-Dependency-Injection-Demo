@@ -5,7 +5,7 @@ import com.diego.springboot.di.app.springboot_di.models.Product;
 
 //import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.context.annotation.SessionScope;
+//import org.springframework.web.context.annotation.SessionScope;
 
 /**
  * La clase ProductRepository simula la capa de acceso a los datos.
@@ -20,7 +20,7 @@ import org.springframework.web.context.annotation.SessionScope;
  * principal que deseamos inyectar en el service
  */
 
-@SessionScope
+//@SessionScope
 //@Primary
 @Repository
 public class ProductRepositoryImpl implements ProductRepository {

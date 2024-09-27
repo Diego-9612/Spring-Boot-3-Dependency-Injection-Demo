@@ -3,6 +3,8 @@ package com.diego.springboot.di.app.springboot_di.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 //import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -23,29 +25,36 @@ import com.diego.springboot.di.app.springboot_di.repositories.ProductRepository;
 @Service
 public class ProductServiceImpl implements ProductService {
 
+    @Autowired
+    private Environment environment;
+
     private ProductRepository repository;
 
-    /** Para este caso la inyeccion de dependencias se hace por medio del constructor 
-     * No es necesario hacer uso de la anotacion @Autowired. 
+    /**
+     * Para este caso la inyeccion de dependencias se hace por medio del constructor
+     * No es necesario hacer uso de la anotacion @Autowired.
      */
 
-    /**Hacemos uso de la anotacion @Qualifier para indicar
-     * que implementacion de la interfaz vamos a inyectar 
+    /**
+     * Hacemos uso de la anotacion @Qualifier para indicar
+     * que implementacion de la interfaz vamos a inyectar
      */
 
     public ProductServiceImpl(ProductRepository repository) {
         this.repository = repository;
     }
-    
-    /**public ProductServiceImpl(@Qualifier("RepositoryFoo")ProductRepository repository) {
-    *    this.repository = repository;
-    *}
-    */
+
+    /**
+     * public ProductServiceImpl(@Qualifier("RepositoryFoo")ProductRepository
+     * repository) {
+     * this.repository = repository;
+     * }
+     */
 
     @Override
     public List<Product> findAll() {
         return repository.findAll().stream().map(p -> {
-            Double priceTax = p.getPrice() * 1.25d;
+            Double priceTax = p.getPrice() * environment.getProperty("config.price.tax", Double.class);
             Product newProduct = (Product) p.clone();
             newProduct.setPrice(priceTax.longValue());
             return newProduct;
